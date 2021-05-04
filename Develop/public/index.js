@@ -14,6 +14,10 @@ fetch("/api/transaction")
     populateChart();
   });
 
+window.addEventListener('load', () => {
+  registerSW();
+});
+
 function populateTotal() {
   // reduce transaction amounts to a single total value
   let total = transactions.reduce((total, t) => {
@@ -143,6 +147,17 @@ function sendTransaction(isAdding) {
     amountEl.value = "";
   });
 }
+
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    try {
+      navigator.serviceWorker.register('./service-worker.js')
+    } catch (e) {
+      console.log('Service worker registration failed')
+    }
+  }
+}
+
 
 document.querySelector("#add-btn").onclick = function() {
   sendTransaction(true);
